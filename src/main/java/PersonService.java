@@ -2,9 +2,17 @@ import javax.xml.validation.Validator;
 import java.util.List;
 
 public class PersonService {
-    public Person createPerson(String name, List<String> phoneNumbers, String postalCode){
+    public Person createPerson(String name, List<String> phoneNumbers, String postalCode, int age, String favoriteToy){
         PersonValidator validator = new PersonValidator();
-        Person newPerson = new Person();
+        Person newPerson = null;
+
+        if(age < 14){
+            newPerson = new Kid();
+            ((Kid) newPerson).favoriteToy = favoriteToy;
+        }else{
+            newPerson = new Adult();
+        }
+
         newPerson.phoneNumbers = phoneNumbers;
         newPerson.name = name;
         newPerson.postalCode = postalCode;
