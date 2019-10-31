@@ -1,21 +1,21 @@
+import Commands.CreatePerson;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class PersonService {
     private final Logger logger;
 
-    public Person createPerson(String name, String[] phoneNumbers,String postalCode, int age, String favoriteToy) throws Exception{
+    public Person createPerson(CreatePerson command) throws Exception{
         try{
-            PersonValidator validator = new PersonValidator();
-            Person person = age < 14 ?
-                    new Kid(name, phoneNumbers, postalCode, favoriteToy) :
-                    new Adult(name, phoneNumbers, postalCode);
+            CommandValidator.validate(command);
 
-            String[] result = validator.validate(person);
-
-            if(result.length > 0){
-                throw new UnableToCreatePersonException(result);
-            }
+            Person person = PersonFactory.create(
+                    command.getName(),
+                    command.getPhoneNumbers(),
+                    command.getPostalCode(),
+                    command.getAge(),
+                    command.getFavoriteToy()
+            );
             this.storePerson(person);
 
             return person;

@@ -1,3 +1,4 @@
+import Commands.CreatePerson;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,10 +13,11 @@ public class PersonServiceTests{
     public void a_person_without_valid_phone_number_should_not_be_created() throws Exception{
         Logger logger = Mockito.mock(Logger.class);
         PersonService personService = new PersonService(logger);
+        CreatePerson command = new CreatePerson("Homer Simpson", new String[]{"064678090988"}, "SP42", 20, null);
 
         try{
-            personService.createPerson("Homer Simpson", new String[]{"064678090988"}, "SP42", 20, null);
-        } catch(UnableToCreatePersonException exception){
+            personService.createPerson(command);
+        } catch(InvalidCreatePersonCommandException exception){
             Assert.assertEquals("Error - Invalid phone number\nError - Validation errors have been found", exception.getMessage());
             ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
             verify(logger).log(argument.capture());
@@ -27,7 +29,8 @@ public class PersonServiceTests{
     public void a_person_with_an_age_under_14_should_create_a_kid() throws Exception{
         Logger logger = Mockito.mock(Logger.class);
         PersonService personService = new PersonService(logger);
-        Person person = personService.createPerson("Homer Simpson", new String[]{"0454646464"}, "SP42", 12, "ValidToy");
+        CreatePerson command = new CreatePerson("Homer Simpson", new String[]{"0454646464"}, "SP42", 12, "ValidToy");
+        Person person = personService.createPerson(command);
 
         Assert.assertNotNull(person);
         Assert.assertTrue(person instanceof Kid);
