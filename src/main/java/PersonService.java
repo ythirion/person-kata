@@ -6,34 +6,26 @@ import java.util.List;
 public class PersonService {
     private final Logger logger;
 
-    public Person createPerson(String name, String[] phoneNumbers,String postalCode, int age, String favoriteToy){
-        PersonValidator validator = new PersonValidator();
-        Person person = age < 14 ?
-                new Kid(name, phoneNumbers, postalCode, favoriteToy) :
-                new Adult(name, phoneNumbers, postalCode);
-
+    public Person createPerson(String name, String[] phoneNumbers,String postalCode, int age, String favoriteToy) throws Exception{
         try{
+            PersonValidator validator = new PersonValidator();
+            Person person = age < 14 ?
+                    new Kid(name, phoneNumbers, postalCode, favoriteToy) :
+                    new Adult(name, phoneNumbers, postalCode);
+
             List<String> result = validator.validate(person);
 
             if(result.size() > 0){
-                logger.log("Errors in person validation");
-
-                for(String error : result){
-                    logger.log(error);
-                }
-                return null;
+                throw new UnableToCreatePersonException(result.stream().toArray(String[]::new));
             }
-        } catch(InvalidPersonException invalidPersonException){
-            logger.log(invalidPersonException.getMessage());
-            return null;
-        }
+            this.storePerson(person);
 
-        try {
-            storePerson(person);
-        } catch(Exception exception){
-            logger.log(exception.getMessage());
+            return person;
         }
-        return person;
+        catch(Exception ex){
+            logger.log(ex.getMessage());
+            throw ex;
+        }
     }
 
     private void storePerson(Person person) throws Exception {
