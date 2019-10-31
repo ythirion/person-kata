@@ -1,7 +1,12 @@
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
+@AllArgsConstructor
 public class PersonService {
-    public Person createPerson(String name, String[] phoneNumbers, String postalCode, int age, String favoriteToy){
+    private final Logger logger;
+
+    public Person createPerson(String name, String[] phoneNumbers,String postalCode, int age, String favoriteToy){
         if(age < 14){
             return createKid(name, phoneNumbers, postalCode, age, favoriteToy);
         }else{
@@ -17,22 +22,22 @@ public class PersonService {
             List<String> result = validator.validate(kid);
 
             if(result.size() > 0){
-                System.out.println("Errors in person validation");
+                logger.log("Errors in person validation");
 
                 for(String error : result){
-                    System.out.println(error);
+                    logger.log(error);
                 }
                 return null;
             }
         } catch(InvalidPersonException invalidPersonException){
-            System.out.println(invalidPersonException.getMessage());
+            logger.log(invalidPersonException.getMessage());
             return null;
         }
 
         try {
             storePerson(kid);
         } catch(Exception exception){
-            System.out.println(exception);
+            logger.log(exception.getMessage());
         }
         return kid;
     }
@@ -45,22 +50,22 @@ public class PersonService {
             List<String> result = validator.validate(adult);
 
             if(result.size() > 0){
-                System.out.println("Errors in person validation");
+                logger.log("Errors in person validation");
 
                 for(String error : result){
-                    System.out.println(error);
+                    logger.log(error);
                 }
                 return null;
             }
         } catch(InvalidPersonException invalidPersonException){
-            System.out.println(invalidPersonException.getMessage());
+            logger.log(invalidPersonException.getMessage());
             return null;
         }
 
         try {
             storePerson(adult);
         } catch(Exception exception){
-            System.out.println(exception);
+            logger.log(exception.getMessage());
         }
         return adult;
     }
