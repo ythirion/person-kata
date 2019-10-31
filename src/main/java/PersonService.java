@@ -1,7 +1,5 @@
 import lombok.AllArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 public class PersonService {
     private final Logger logger;
@@ -13,10 +11,10 @@ public class PersonService {
                     new Kid(name, phoneNumbers, postalCode, favoriteToy) :
                     new Adult(name, phoneNumbers, postalCode);
 
-            List<String> result = validator.validate(person);
+            String[] result = validator.validate(person);
 
-            if(result.size() > 0){
-                throw new UnableToCreatePersonException(result.stream().toArray(String[]::new));
+            if(result.length > 0){
+                throw new UnableToCreatePersonException(result);
             }
             this.storePerson(person);
 

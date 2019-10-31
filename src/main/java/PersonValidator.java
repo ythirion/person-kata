@@ -9,7 +9,7 @@ public class PersonValidator {
     private static final String PHONE_NUMBER_REGEX = "^[0-9]{1,10}$";
     private static final String[] INVALID_TOYS = new String[] { "Spongebob", "Hello Kitty" };
 
-    public List<String> validate(@NonNull Person person) {
+    public String[] validate(@NonNull Person person) {
         List<String> constraints = new ArrayList<String>();
 
         check(person.getPostalCode(), "postal code", constraints);
@@ -21,7 +21,7 @@ public class PersonValidator {
             constraints.add("Error - Validation errors have been found");
         }
 
-        return constraints;
+        return constraints.toArray(new String[0]);
     }
 
     private void checkFavoriteToy(Person person, List<String> constraints) {

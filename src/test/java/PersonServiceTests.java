@@ -9,14 +9,14 @@ import static org.mockito.Mockito.verify;
 public class PersonServiceTests{
 
     @Test
-    public void a_person_without_phone_number_should_not_be_created() throws Exception{
+    public void a_person_without_valid_phone_number_should_not_be_created() throws Exception{
         Logger logger = Mockito.mock(Logger.class);
         PersonService personService = new PersonService(logger);
 
         try{
-            personService.createPerson("Homer Simpson", null, "SP42", 20, null);
+            personService.createPerson("Homer Simpson", new String[]{"064678090988"}, "SP42", 20, null);
         } catch(UnableToCreatePersonException exception){
-            Assert.assertEquals("Error - No phone number supplied\nError - Validation errors have been found", exception.getMessage());
+            Assert.assertEquals("Error - Invalid phone number\nError - Validation errors have been found", exception.getMessage());
             ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
             verify(logger).log(argument.capture());
             Assert.assertEquals(argument.getValue(), exception.getMessage());
