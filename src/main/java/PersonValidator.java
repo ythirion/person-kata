@@ -7,10 +7,10 @@ public class PersonValidator {
         boolean hasFoundError = false;
 
         if (person != null) {
-            if (person.postalCode != null) {
-                if (person.name != null) {
-                    if (person.phoneNumbers != null) {
-                        for (String phoneNumber : person.phoneNumbers) {
+            if (person.getPostalCode() != null) {
+                if (person.getName() != null) {
+                    if (person.getPhoneNumbers() != null) {
+                        for (String phoneNumber : person.getPhoneNumbers()) {
                             if (phoneNumber != null) {
                                 if (phoneNumber.isEmpty()) {
                                     constraints.add("Error - Phone number is empty");
@@ -37,12 +37,12 @@ public class PersonValidator {
 
             if(person instanceof Kid){
                 Kid kid = (Kid)person;
-                if(kid.favoriteToy != null){
-                    if(kid.favoriteToy.isEmpty()) {
+                if(kid.getFavoriteToy() != null){
+                    if(kid.getFavoriteToy().isEmpty()) {
                         constraints.add("Error - No favorite toy for kid");
                         hasFoundError = true;
                     } else {
-                        switch(kid.favoriteToy){
+                        switch(kid.getFavoriteToy()){
                             case "Spongebob":
                                 constraints.add("Error - Spongebob is not allowed as favoriteToy");
                             case "Hello Kitty":

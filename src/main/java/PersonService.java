@@ -12,12 +12,7 @@ public class PersonService {
 
     private Person createKid(String name, List<String> phoneNumbers, String postalCode, int age, String favoriteToy){
         PersonValidator validator = new PersonValidator();
-        Kid kid = new Kid();
-        kid.favoriteToy = favoriteToy;
-
-        kid.phoneNumbers = phoneNumbers;
-        kid.name = name;
-        kid.postalCode = postalCode;
+        Kid kid = new Kid(name, phoneNumbers, postalCode, favoriteToy);
 
         try{
             List<String> result = validator.validate(kid);
@@ -45,10 +40,7 @@ public class PersonService {
 
     private Person createAdult(String name, List<String> phoneNumbers, String postalCode, String favoriteToy){
         PersonValidator validator = new PersonValidator();
-        Adult adult = new Adult();
-        adult.phoneNumbers = phoneNumbers;
-        adult.name = name;
-        adult.postalCode = postalCode;
+        Adult adult = new Adult(name, phoneNumbers, postalCode);
 
         try{
             List<String> result = validator.validate(adult);
