@@ -1,8 +1,7 @@
-import javax.xml.validation.Validator;
 import java.util.List;
 
 public class PersonService {
-    public Person createPerson(String name, List<String> phoneNumbers, String postalCode, int age, String favoriteToy){
+    public Person createPerson(String name, String[] phoneNumbers, String postalCode, int age, String favoriteToy){
         if(age < 14){
             return createKid(name, phoneNumbers, postalCode, age, favoriteToy);
         }else{
@@ -10,7 +9,7 @@ public class PersonService {
         }
     }
 
-    private Person createKid(String name, List<String> phoneNumbers, String postalCode, int age, String favoriteToy){
+    private Person createKid(String name, String[] phoneNumbers, String postalCode, int age, String favoriteToy){
         PersonValidator validator = new PersonValidator();
         Kid kid = new Kid(name, phoneNumbers, postalCode, favoriteToy);
 
@@ -38,7 +37,7 @@ public class PersonService {
         return kid;
     }
 
-    private Person createAdult(String name, List<String> phoneNumbers, String postalCode, String favoriteToy){
+    private Person createAdult(String name, String[] phoneNumbers, String postalCode, String favoriteToy){
         PersonValidator validator = new PersonValidator();
         Adult adult = new Adult(name, phoneNumbers, postalCode);
 
